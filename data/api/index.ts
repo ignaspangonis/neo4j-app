@@ -1,6 +1,8 @@
 import neo4j from 'neo4j-driver'
 
 import initialData from '../mocks/initial-data'
+import { GRAPH_NAME } from '../../constants/graph'
+import type { Record } from '../../types/record'
 
 const driver = neo4j.driver(
   'bolt://localhost:7687',
@@ -11,7 +13,7 @@ const session = driver.session()
 export const clearDatabase = async () => {
   await session.run('MATCH (a) -[r]-> () DELETE a, r')
   await session.run('MATCH (a) DELETE a')
-  await session.run('CALL gds.graph.drop("NBA", false)')
+  await session.run(`CALL gds.graph.drop("${GRAPH_NAME}", false)`)
 }
 
 export const closeSession = async () => {
@@ -22,17 +24,21 @@ export const closeSession = async () => {
 export const createInMemoryTable = () =>
   session.run(`
   CALL gds.graph.project(
-    'myGraph',
+    '${GRAPH_NAME}',
     'City',
     'PATH',
-    { relationshipProperties: 'cost' }
+    { relationshipProperties: 'price' }
 )
     `)
 
 export const createData = () => session.run(initialData)
 
-export const getRecords = async (query: string) => {
+//
+export const getRecords = async <T extends string>(query: string) => {
   const result = await session.run(query)
+  const transformedResult = result.records.map((record) =>
+    record.toObject()
+  ) as Record<T>[]
 
-  return result.records.map((record) => record.toObject())
+  return transformedResult
 }

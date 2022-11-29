@@ -4,7 +4,7 @@ MATCH (a) -[r] -> () DELETE a, r
 // Delete all entities
 MATCH (a) DELETE a
 
-// Delete inMemoty table
+// Delete inMemory table
 CALL gds.graph.drop("myGraph", false)
 
 /////////////////////////////////////////////////////////
@@ -15,20 +15,20 @@ MERGE (c:City {name: 'C'})
 MERGE (d:City {name: 'D'})
 MERGE (e:City {name: 'E'})
 MERGE (f:City {name: 'F'})
-MERGE (a) -[:PATH {cost: 10}]-> (b)
-MERGE (a) -[:PATH {cost: 7}]-> (c)
-MERGE (a) -[:PATH {cost: 10}]-> (d)
-MERGE (a) -[:PATH {cost: 150}]-> (d)
-MERGE (a) -[:PATH {cost: 200}]-> (e)
-MERGE (b) -[:PATH {cost: 15}]-> (c)
-MERGE (c) -[:PATH {cost: 5}]-> (a)
-MERGE (c) -[:PATH {cost: 150}]-> (a)
-MERGE (d) -[:PATH {cost: 8}]-> (a)
-MERGE (d) -[:PATH {cost: 10}]-> (e)
-MERGE (e) -[:PATH {cost: 150}]-> (a)
-MERGE (e) -[:PATH {cost: 1500}]-> (a)
-MERGE (e) -[:PATH {cost: 10}]-> (f)
-MERGE (f) -[:PATH {cost: 15}]-> (e)
+MERGE (a) -[:PATH {price: 10}]-> (b)
+MERGE (a) -[:PATH {price: 7}]-> (c)
+MERGE (a) -[:PATH {price: 10}]-> (d)
+MERGE (a) -[:PATH {price: 150}]-> (d)
+MERGE (a) -[:PATH {price: 200}]-> (e)
+MERGE (b) -[:PATH {price: 15}]-> (c)
+MERGE (c) -[:PATH {price: 5}]-> (a)
+MERGE (c) -[:PATH {price: 150}]-> (a)
+MERGE (d) -[:PATH {price: 8}]-> (a)
+MERGE (d) -[:PATH {price: 10}]-> (e)
+MERGE (e) -[:PATH {price: 150}]-> (a)
+MERGE (e) -[:PATH {price: 1500}]-> (a)
+MERGE (e) -[:PATH {price: 10}]-> (f)
+MERGE (f) -[:PATH {price: 15}]-> (e)
 MERGE (planeA:Plane {name: 'Plane-A'})
 MERGE (planeB:Plane {name: 'Plane-B'})
 MERGE (planeC:Plane {name: 'Plane-C'})
@@ -51,7 +51,7 @@ CALL gds.graph.project(
     'myGraph',
     'City',
     'PATH',
-    { relationshipProperties: 'cost' }
+    { relationshipProperties: 'price' }
 )
 
 /////////////////////////////////////////////////////////
@@ -85,21 +85,21 @@ MATCH cities = (start:City {name:'A'}) -[road:PATH *..3]-> (finish:City {name:'F
 RETURN cities,
   size(relationships(cities)) AS numHops,
   [node IN nodes(cities) | node.name] AS cityNames,
-  [r IN relationships(cities) | r.cost] AS costs,
-  apoc.coll.sum([r IN relationships(cities) | r.cost]) AS totalCost
-ORDER BY numHops, totalCost
+  [r IN relationships(cities) | r.price] AS prices,
+  apoc.coll.sum([r IN relationships(cities) | r.price]) AS totalPrice
+ORDER BY numHops, totalPrice
 
 // 6. Find cheapest path from city to city
 MATCH (start:City {name: 'B'}), (finish:City {name: 'F'})
 CALL gds.shortestPath.dijkstra.stream('myGraph', {
   sourceNode: start,
   targetNode: finish,
-  relationshipWeightProperty: 'cost' // REMOVE THIS FOR UNWEIGHTED GRAPH
+  relationshipWeightProperty: 'price' // REMOVE THIS FOR UNWEIGHTED GRAPH
 })
-YIELD index, totalCost, costs, nodeIds, path
+YIELD index, totalPrice, prices, nodeIds, path
 RETURN
-  totalCost,
-  costs,
+  totalPrice,
+  prices,
   [nodeId IN nodeIds | gds.util.asNode(nodeId).name] AS nodeNames,
   size(nodeIds) as nodeCount,
   nodes(path) as path
@@ -120,17 +120,17 @@ MATCH
 (start:City{name:'B'}),
 (end:City{name:'F'}),
 paths = allShortestPaths((start) -[:PATH*]-> (end))
-RETURN paths, REDUCE(sum = 0, road IN RELATIONSHIPS(paths) | sum + road.cost) AS cost, [node IN nodes(paths) | node.name] AS cityNames
-ORDER BY cost ASC
+RETURN paths, REDUCE(sum = 0, road IN RELATIONSHIPS(paths) | sum + road.price) AS price, [node IN nodes(paths) | node.name] AS cityNames
+ORDER BY price ASC
 
 OR
 
 MATCH (start:City{name:'B'}), (end:City{name:'F'}),
   paths = allShortestPaths((start) -[:PATH*]-> (end))
 RETURN paths,
-  apoc.coll.sum([rel in relationships(paths) | rel.cost]) as cost,
+  apoc.coll.sum([rel in relationships(paths) | rel.price]) as price,
   [node IN nodes(paths) | node.name] AS cityNames
-ORDER BY cost ASC
+ORDER BY price ASC
 
 -------
 
