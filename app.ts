@@ -15,7 +15,7 @@ async function main() {
     await executeAndLog(
       "2. Get all planes with prefix 'Plane-':",
       "MATCH (p:Plane) WHERE p.name CONTAINS 'Plane-' RETURN p",
-      'n'
+      'p'
     )
   } catch (error) {
     console.error(error)
@@ -32,17 +32,14 @@ const executeAndLog = async <T extends string>(
   logBlue(description)
 
   const result = await api.getRecords<T>(query)
+  const transformedResult = result.map((record) => {
+    const { identity, ...rest } = record[property]
 
-  console.log(
-    result.map((record) => {
-      const { elementId, identity, labels, properties } = record[property]
+    return {
+      identity: Number(identity),
+      ...rest
+    }
+  })
 
-      return {
-        elementId,
-        identity: Number(identity),
-        labels,
-        properties
-      }
-    })
-  )
+  console.log(transformedResult)
 }
