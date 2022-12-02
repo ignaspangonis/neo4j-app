@@ -16,21 +16,11 @@
     "baseUrl": "./",
     "incremental": true,
     "paths": {
-      "@/data/*": ["data/*"],
-      "@/constants/*": ["constants/*"],
-      "@/types/*": ["types/*"],
-    }
-  },
-  "ts-node": {
-    "compilerOptions": {
-      "module": "commonjs",
+      "@/*": ["src/*"]
     },
   },
   "include": [
-    "./constants/**/*.ts",
-    "./data/**/*.ts",
-    "./types/**/*.ts",
-    "./utils/**/*.ts",
+    "./src/**/*.ts",
   ],
   "typeRoots": ["node_modules/@types"],
   "exclude": [

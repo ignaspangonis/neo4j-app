@@ -1,6 +1,5 @@
-import * as api from './data/api'
-import { logBlue } from './utils/console'
-import type { Record } from './types/record'
+import * as api from './src/data/api'
+import { logBlue } from './src/utils/console'
 
 main()
 
