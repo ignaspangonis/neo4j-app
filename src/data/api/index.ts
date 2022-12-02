@@ -2,7 +2,7 @@ import neo4j from 'neo4j-driver'
 
 import initialData from '../mocks/initial-data'
 import { GRAPH_NAME } from '../../constants/graph'
-import type { Record } from '../../src/types/record'
+import type { Record } from '../../types/record'
 
 const driver = neo4j.driver(
   'bolt://localhost:7687',
