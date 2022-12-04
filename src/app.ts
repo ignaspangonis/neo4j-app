@@ -1,6 +1,6 @@
-import * as api from './src/data/api'
-import { logBlue } from './src/utils/console'
-import { transformRecords } from './src/data/transformers/response'
+import * as api from './data/api'
+import { logBlue } from './utils/console'
+import { transformRecords } from './data/transformers/response'
 
 main()
 

@@ -4,7 +4,7 @@
   "description": "Neo4j app",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node ./app.ts"
+    "start": "ts-node ./src/app.ts"
   },
   "keywords": [],
   "author": "Ignas Pangonis",
