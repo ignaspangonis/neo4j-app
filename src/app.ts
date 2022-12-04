@@ -21,18 +21,21 @@ async function main() {
 
     await executeAndLog(
       "2. Find airline stops for airline 'Airline-B'",
+
       `MATCH (airline:Airline {name: 'Airline-B'}) -[:FLIES_TO]-> (city)
       RETURN city.name as cityName`
     )
 
     await executeAndLog(
       "2.1. Find all airlines that fly to 'Antalya'",
+
       `MATCH (airline:Airline) -[:FLIES_TO]-> (city:City {name: 'Antalya'})
       RETURN airline.name as airlineName`
     )
 
     await executeAndLog(
       '2.2. Find airlines that fly to Antalya and have a flight to Istanbul',
+
       `MATCH (airline:Airline) -[:FLIES_TO]-> (city:City {name: 'Antalya'})
       WITH airline
       MATCH (airline) -[:FLIES_TO]-> (city:City {name: 'Boston'})
@@ -44,6 +47,7 @@ async function main() {
 
     await executeAndLog(
       '3. Find all flights from Antalya to Cairo',
+
       `MATCH cities = (start:City {name:'Antalya'}) -[:FLIGHT *..2]-> (finish:City {name:'Cairo'})
       RETURN
         size(relationships(cities)) AS numHops,
@@ -73,8 +77,19 @@ async function main() {
         nodes(path) as path`
     )
 
-    // Agreguojami duomenys (pvz. kaip 2.4, tik surasti kelio ilgį ar konversijos kainą). Nenaudokite trumpiausio kelio.
+    // 5. Agreguojami duomenys (pvz. kaip 2.4, tik surasti kelio ilgį ar konversijos kainą). Nenaudokite trumpiausio kelio.
     // TODO
+
+    await executeAndLog(
+      '5. Find cheapest flight from Antalya to Cairo',
+
+      `MATCH (start:City{name:'Antalya'}), (end:City{name:'Cairo'}),
+        flights = allShortestPaths((start) -[:FLIGHT*]-> (end))
+      RETURN start.name AS start, end.name AS end,
+        apoc.coll.sum([rel in relationships(flights) | rel.price]) as price,
+        [node IN nodes(flights) | node.name] AS cityNames
+      ORDER BY price ASC`
+    )
   } catch (error) {
     console.error(error)
   } finally {
