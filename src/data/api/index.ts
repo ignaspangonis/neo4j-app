@@ -2,7 +2,7 @@ import neo4j from 'neo4j-driver'
 
 import initialData from '../mocks/initial-data'
 import { GRAPH_NAME } from '../../constants/graph'
-import type { Record } from '../../types/record'
+import type { Entity } from '../../types/record'
 
 const driver = neo4j.driver(
   'bolt://localhost:7687',
@@ -33,12 +33,13 @@ export const createInMemoryTable = () =>
 
 export const createData = () => session.run(initialData)
 
-//
-export const getRecords = async <T extends string>(query: string) => {
+export const getRecords = async <T extends string[]>(
+  query: string
+): Promise<Entity<T>[]> => {
   const result = await session.run(query)
   const transformedResult = result.records.map((record) =>
     record.toObject()
-  ) as Record<T>[]
+  ) as Entity<T>[]
 
   return transformedResult
 }
