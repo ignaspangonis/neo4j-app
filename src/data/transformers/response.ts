@@ -2,7 +2,7 @@ import { toString } from 'neo4j-driver-core'
 
 export const transformRecords = <T extends Array<string>>(
   records: Array<Record<string, any>>,
-  properties: T | undefined
+  properties?: T
 ) => {
   if (!properties) return records
 
