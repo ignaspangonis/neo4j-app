@@ -34,7 +34,6 @@ export const createData = () => session.run(initialData)
 
 export const getRecords = async (query: string) => {
   const result = await session.run(query)
-  const transformedResult = result.records.map((record) => record.toObject())
 
-  return transformedResult
+  return result.records.map((record) => record.toObject())
 }

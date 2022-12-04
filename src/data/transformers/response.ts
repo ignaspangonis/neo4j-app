@@ -10,10 +10,10 @@ export const transformRecords = <T extends Array<string>>(
     const newRecord = { ...record }
 
     properties.forEach((property) => {
-      const identity = newRecord[property].identity
+      const propertyToFormat = newRecord[property]
 
-      if (identity) {
-        newRecord[property].identity = toString(identity)
+      if (propertyToFormat) {
+        newRecord[property] = toString(propertyToFormat)
       }
     })
 
