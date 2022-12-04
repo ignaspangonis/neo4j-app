@@ -78,7 +78,6 @@ async function main() {
     )
 
     // 5. Agreguojami duomenys (pvz. kaip 2.4, tik surasti kelio ilgį ar konversijos kainą). Nenaudokite trumpiausio kelio.
-    // TODO
 
     await executeAndLog(
       '5. Find cheapest flight from Antalya to Cairo',
