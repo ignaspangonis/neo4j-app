@@ -6,7 +6,7 @@ export const transformRecords = <T extends Array<string>>(
 ) => {
   if (!properties) return records
 
-  return records.map((record: any) => {
+  return records.map((record) => {
     const newRecord = { ...record }
 
     properties.forEach((property) => {
