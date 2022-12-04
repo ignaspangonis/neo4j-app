@@ -10,8 +10,6 @@ async function main() {
     await api.createData()
     await api.createInMemoryTable()
 
-    // Agreguojami duomenys (pvz. kaip 2.4, tik surasti kelio ilgį ar konversijos kainą). Nenaudokite trumpiausio kelio.
-
     // 1. Surasti esybes pagal savybę (pvz. rasti asmenį pagal asmens kodą, rasti banko sąskaitą pagal numerį).
 
     await executeAndLog(
@@ -74,6 +72,9 @@ async function main() {
         size(nodeIds) as nodeCount,
         nodes(path) as path`
     )
+
+    // Agreguojami duomenys (pvz. kaip 2.4, tik surasti kelio ilgį ar konversijos kainą). Nenaudokite trumpiausio kelio.
+    // TODO
   } catch (error) {
     console.error(error)
   } finally {
