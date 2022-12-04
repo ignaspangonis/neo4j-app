@@ -1,23 +1,22 @@
 import { toString } from 'neo4j-driver-core'
 
-import { Entity } from 'types/record'
-
 export const transformRecords = <T extends Array<string>>(
-  records: Array<Entity<T>>,
-  properties: T
-) =>
-  records.map((record: any) => {
-    const transformedRecord = properties.reduce((acc, property) => {
-      const { identity, ...rest } = record[property]
+  records: Array<Record<string, any>>,
+  properties: T | undefined
+) => {
+  if (!properties) return records
 
-      return {
-        ...acc,
-        [property]: {
-          ...rest,
-          identity: toString(identity)
-        }
+  return records.map((record: any) => {
+    const newRecord = { ...record }
+
+    properties.forEach((property) => {
+      const identity = newRecord[property].identity
+
+      if (identity) {
+        newRecord[property].identity = toString(identity)
       }
-    }, {})
+    })
 
-    return transformedRecord
+    return newRecord
   })
+}
