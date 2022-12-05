@@ -57,9 +57,10 @@ async function main() {
     )
 
     // 4. Surasti trumpiausią kelią įvertinant svorius (pvz. surasti trumpiausią kelią tarp Vilniaus ir Klaipėdos; surasti pigiausią būdą konvertuoti iš valiutos X į valiutą Y, kuomet turima visų bankų konversijos informacija ir optimalus būdas, gali būti atlikti kelis žingsnius).
+    // 5. Agreguojami duomenys (pvz. kaip 4, tik surasti kelio ilgį ar konversijos kainą). Nenaudokite trumpiausio kelio.
 
     await executeAndLog(
-      '4. Find cheapest flight from Antalya to Cairo',
+      '4 and 5. Find cheapest flight from Antalya to Cairo',
 
       `MATCH (start:City {name:'Antalya'}), (finish:City {name:'Cairo'})
       CALL gds.shortestPath.dijkstra.stream('myGraph', {
@@ -76,10 +77,8 @@ async function main() {
         nodes(path) as path`
     )
 
-    // 5. Agreguojami duomenys (pvz. kaip 4, tik surasti kelio ilgį ar konversijos kainą). Nenaudokite trumpiausio kelio.
-
     await executeAndLog(
-      '5. Find cheapest flight from Antalya to Cairo',
+      '5. Find shortest flight from Antalya to Cairo',
 
       `MATCH (start:City{name:'Antalya'}), (end:City{name:'Cairo'}),
         flights = allShortestPaths((start) -[:FLIGHT]-> (end))
