@@ -96,7 +96,7 @@ async function main() {
       '5.1. Find cheapest flight from Antalya to Cairo',
 
       `MATCH (start:City{name:'Antalya'}), (end:City{name:'Cairo'}),
-        flights = allShortestPaths((start) -[:FLIGHT*]-> (end))
+        flights = allShortestPaths((start) -[:FLIGHT]-> (end))
       RETURN start.name AS start, end.name AS end,
         REDUCE(sum = 0, flight IN RELATIONSHIPS(flights) | sum + flight.price) AS price,
         [node IN nodes(flights) | node.name] AS cityNames
@@ -114,12 +114,12 @@ async function main() {
 const executeAndLog = async <T extends string[]>(
   description: string,
   query: string,
-  properties?: T
+  integerProperties?: T
 ) => {
   logBlue(description)
 
   const records = await api.getRecords(query)
-  const transformedRecords = transformRecords(records, properties)
+  const transformedRecords = transformRecords(records, integerProperties)
 
   console.log(JSON.stringify(transformedRecords, null, 2))
 }
