@@ -20,6 +20,7 @@ export const closeSession = async () => {
   await driver.close()
 }
 
+// Adds a graph to the catalog using Native projection.
 export const createInMemoryTable = () =>
   session.run(`
   CALL gds.graph.project(
