@@ -56,7 +56,7 @@ async function main() {
       ORDER BY numHops, totalPrice`
     )
 
-    // 4. Surasti trumpiausią kelią (pvz. surasti trumpiausią kelią tarp Vilniaus ir Klaipėdos; surasti pigiausią būdą konvertuoti iš valiutos X į valiutą Y, kuomet turima visų bankų konversijos informacija ir optimalus būdas, gali būti atlikti kelis žingsnius).
+    // 4. Surasti trumpiausią kelią įvertinant svorius (pvz. surasti trumpiausią kelią tarp Vilniaus ir Klaipėdos; surasti pigiausią būdą konvertuoti iš valiutos X į valiutą Y, kuomet turima visų bankų konversijos informacija ir optimalus būdas, gali būti atlikti kelis žingsnius).
 
     await executeAndLog(
       '4. Find cheapest flight from Antalya to Cairo',
@@ -76,7 +76,7 @@ async function main() {
         nodes(path) as path`
     )
 
-    // 5. Agreguojami duomenys (pvz. kaip 2.4, tik surasti kelio ilgį ar konversijos kainą). Nenaudokite trumpiausio kelio.
+    // 5. Agreguojami duomenys (pvz. kaip 4, tik surasti kelio ilgį ar konversijos kainą). Nenaudokite trumpiausio kelio.
 
     await executeAndLog(
       '5. Find cheapest flight from Antalya to Cairo',
