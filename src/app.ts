@@ -10,14 +10,19 @@ async function main() {
     await api.createData()
     await api.createInMemoryTable()
 
-    // 1. Surasti esybes pagal savybę (pvz. rasti asmenį pagal asmens kodą, rasti banko sąskaitą pagal numerį).
+    // 1. Find entities by property (e.g. find person by personal code, find bank account by number).
 
     await executeAndLog(
       "1. Get all airlines with prefix 'Airline-'",
       `MATCH (airline:Airline) WHERE airline.name CONTAINS 'Airline-' RETURN airline.name as airlineName`
     )
 
-    // 2. Surasti esybes pagal ryšį (pvz. banko sąskaitas priklausančias asmeniui, banko korteles susietas su konkretaus asmens sąskaitomis).
+    await executeAndLog(
+      "1.1. Get airline 'Airline-A'",
+      `MATCH (airline:Airline) WHERE airline.name = 'Airline-A' RETURN airline`
+    )
+
+    // 2. Find entities by connection (e.g. bank accounts belonging to a person, bank cards linked to the accounts of a specific person).
 
     await executeAndLog(
       "2. Find airline stops for airline 'Airline-B'",
@@ -42,7 +47,7 @@ async function main() {
       RETURN airline.name as airlineName`
     )
 
-    // 3. Surasti esybes susietas giliais sąryšiais (pvz. draugų draugus, visus kelius tarp Vilniaus ir Klaipėdos; visus autobusus kuriais galima nuvažiuoti iš stotelės X į stotelę Y).
+    // 3. Find entities linked by deep relationships (eg friends of friends, all roads between Vilnius and Klaipėda; all buses that can go from stop X to stop Y).
 
     await executeAndLog(
       '3. Find all flights from Antalya to Cairo',
@@ -56,8 +61,8 @@ async function main() {
       ORDER BY numHops, totalPrice`
     )
 
-    // 4. Surasti trumpiausią kelią įvertinant svorius (pvz. surasti trumpiausią kelią tarp Vilniaus ir Klaipėdos; surasti pigiausią būdą konvertuoti iš valiutos X į valiutą Y, kuomet turima visų bankų konversijos informacija ir optimalus būdas, gali būti atlikti kelis žingsnius).
-    // 5. Agreguojami duomenys (pvz. kaip 4, tik surasti kelio ilgį ar konversijos kainą). Nenaudokite trumpiausio kelio.
+    // 4. Find the shortest path by evaluating the weights (e.g. finding the shortest path between Vilnius and Klaipėda; finding the cheapest way to convert from currency X to currency Y, when the conversion information of all banks is available and the optimal way can be performed in several steps).
+    // 5. Data aggregation
 
     await executeAndLog(
       '4 and 5. Find cheapest flight from Antalya to Cairo',
