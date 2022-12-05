@@ -1,6 +1,6 @@
 # Neo4j app
 
-The purpose of this program is to test out capabilities of Neo4J.
+The purpose of this program is to test out capabilities of the most popular graph database - [Neo4J](https://neo4j.com/).
 
 ## Task
 
