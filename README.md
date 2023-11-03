@@ -2,7 +2,7 @@
 
 The purpose of this program is to test out capabilities of the most popular graph database - [Neo4J](https://neo4j.com/).
 
-## Task
+## Aim
 
 Write a simple program implementing scope suitable for graph databases.
 
